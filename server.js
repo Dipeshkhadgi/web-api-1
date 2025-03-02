@@ -19,3 +19,6 @@ app.use(cors())
 app.use(morgan("dev"))
 
 
+// db connection
+ConnectDB()
+
