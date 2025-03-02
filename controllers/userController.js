@@ -50,4 +50,19 @@ const registerUser = async (req,res) => {
             return res.json({success:false,message: "Please enter a strong password"})
         }
 
-        
+        // hashing user password
+        const salt = await bcrypt.genSalt(10); // the more no. round the more time it will take
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        const newUser = new userModel({name, email, password: hashedPassword})
+        const user = await newUser.save()
+        const token = createToken(user._id)
+        res.json({success:true,token})
+
+    } catch(error){
+        console.log(error);
+        res.json({success:false,message:"Error"})
+    }
+}
+
+export {loginUser, registerUser}
